@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tools
+  name: tools
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tools
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: tools
+    spec:
+      containers:
+      - image: {{ IMAGE }}
+        imagePullPolicy: IfNotPresent
+        name: job
+        command:
+        - sleep 3600
+        resources: {}
