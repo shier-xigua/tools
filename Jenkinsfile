@@ -1,4 +1,4 @@
-pipeline{
+pipeline {
     agent { label: "pod" }
     options { 
         buildDiscarder(logRotator(numToKeepStr: '10'))
