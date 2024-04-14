@@ -47,13 +47,13 @@ pipeline {
     }
     post {
         success {
-           sh "构建镜像成功" 
+           sh "echo '构建镜像成功'" 
         }
         failure {
-           sh "构建镜像失败"
+           sh "echo '构建镜像失败'"
         }
         always {
-           sh "pipeline 结束"
+           sh "echo 'pipeline 结束'"
         }
     }
 }
