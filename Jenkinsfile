@@ -1,5 +1,5 @@
 pipeline {
-    agent { label: "pod" }
+    agent { label: 'pod' }
     options { 
         buildDiscarder(logRotator(numToKeepStr: '10'))
 		disableConcurrentBuilds()
@@ -7,14 +7,14 @@ pipeline {
 		gitLabConnection('gitlab')
     }
     envirment {
-        IMAGE_NAME= "swr.cn-south-1.myhuaweicloud.com/lz/job:v3"
+        IMAGE_NAME= 'swr.cn-south-1.myhuaweicloud.com/lz/job:v3'
         DINGTALK_CREDS = credentials('ding')
         HUAWEIYUN = credentials('huaweiyun-swr')
     }
     stages {
         stage('printenv') {
             steps {
-                sh "printenv"
+                sh 'printenv'
             }
         }
         stage('cheout') {
@@ -24,29 +24,29 @@ pipeline {
         }
         stage('login huaweiyun') {
             steps {
-                sh "docker login -u cn-south-1@HUAWEIYUN_USR -p HUAWEIYUN_PSW swr.cn-south-1.myhuaweicloud.com"
+                sh 'docker login -u cn-south-1@HUAWEIYUN_USR -p HUAWEIYUN_PSW swr.cn-south-1.myhuaweicloud.com'
             }
         }
         stage('build image') {
             steps {
-                sh "docker build . -t ${IMAGE_NAME}"
+                sh 'docker build . -t ${IMAGE_NAME}'
             }
         }
         stage('push image') {
             steps {
-                sh "docker push ${IMAGE_NAME}"
+                sh 'docker push ${IMAGE_NAME}'
             }
         }
     }
     post {
         success {
-           sh "构建镜像成功" 
+           sh '构建镜像成功' 
         }
         failure {
-           sh "构建镜像失败"
+           sh '构建镜像失败'
         }
         always {
-           sh "pipeline 结束"
+           sh 'pipeline 结束'
         }
     }
 }
