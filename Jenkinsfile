@@ -17,10 +17,10 @@ pipeline {
                 sh "printenv"
             }
         }
-        stage('cheout') {
+        stage('checkout') {
             steps {
                 container('tools') {
-                    cheout scm    
+                    checkout scm    
                 }
             }
         }
