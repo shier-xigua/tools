@@ -1,13 +1,13 @@
 pipeline {
     agent { label "pod" }
-    options { 
+    options {
         buildDiscarder(logRotator(numToKeepStr: '10'))
 		disableConcurrentBuilds()
 		timeout(time: 20, unit: 'MINUTES')
 		gitLabConnection('gitlab')
     }
     environment {
-        IMAGE_NAME= "swr.cn-south-1.myhuaweicloud.com/lz/job:v4"
+        IMAGE_NAME= "swr.cn-south-1.myhuaweicloud.com/lz/job:v5"
         HUAWEIYUN = credentials('huaweiyun-swr')
     }
     stages {
@@ -19,7 +19,7 @@ pipeline {
         stage('checkout') {
             steps {
                 container('tools') {
-                    checkout scm    
+                    checkout scm
                 }
             }
         }
@@ -51,10 +51,20 @@ pipeline {
                 }
             }
         }
+            stage('deploy') {
+            steps {
+                container('tools') {
+                    sh "sed -i 's#{{ IMAGE }}#${IMAGE_NAME}#g' deploy/*"
+                    timeout(time: 1, unit: 'MINUTES') {
+                        sh "kubectl apply -f deploy/"
+                    }
+                }
+            }
+        }
     }
     post {
         success {
-           sh "echo '构建镜像成功'" 
+           sh "echo '构建镜像成功'"
         }
         failure {
            sh "echo '构建镜像失败'"
@@ -64,5 +74,4 @@ pipeline {
         }
     }
 }
-
 
