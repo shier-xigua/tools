@@ -17,33 +17,25 @@ pipeline {
                 sh "printenv"
             }
         }
-        stage('cheout') {
+        stage('checkout') {
             container('tools') {
-                steps {
-                    cheout scm
-                }
+                    checkout scm
             }
 
         }
         stage('login huaweiyun') {
             container('tools') {
-                steps {
-                    sh "docker login -u cn-south-1@HUAWEIYUN_USR -p HUAWEIYUN_PSW swr.cn-south-1.myhuaweicloud.com"
-                }
+                    sh "docker login -u cn-south-1@HUAWEIYUN_USR -pHUAWEIYUN_PSW swr.cn-south-1.myhuaweicloud.com"
             }
         }
         stage('build image') {
             container('tools') {
-                steps {
                     sh "docker build . -t ${IMAGE_NAME}"
-                }
             }
         }
         stage('push image') {
             container('tools') {
-                steps {
                     sh "docker push ${IMAGE_NAME}"
-                }
             }
 
         }
