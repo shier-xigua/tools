@@ -44,6 +44,13 @@ pipeline {
                 }
             }
         }
+        stage('kubectl') {
+            steps {
+                container('tools') {
+                    sh "kubectl get pod -n jenkins"
+                }
+            }
+        }
     }
     post {
         success {
