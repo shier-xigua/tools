@@ -7,7 +7,7 @@ pipeline {
 		gitLabConnection('gitlab')
     }
     environment {
-        IMAGE_NAME= "swr.cn-south-1.myhuaweicloud.com/lz/job:v3"
+        IMAGE_NAME= "swr.cn-south-1.myhuaweicloud.com/lz/job:v4"
         HUAWEIYUN = credentials('huaweiyun-swr')
     }
     stages {
