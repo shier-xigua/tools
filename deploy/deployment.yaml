@@ -20,5 +20,7 @@ spec:
         imagePullPolicy: IfNotPresent
         name: job
         command:
+        - /bin/bash
+        - -c
         - sleep 3600
         resources: {}
