@@ -8,7 +8,6 @@ pipeline {
     }
     environment {
         IMAGE_NAME= "swr.cn-south-1.myhuaweicloud.com/lz/job:v3"
-        DINGTALK_CREDS = credentials('ding')
         HUAWEIYUN = credentials('huaweiyun-swr')
     }
     stages {
@@ -27,7 +26,7 @@ pipeline {
         stage('login huaweiyun') {
             steps {
                 container('tools') {
-                    sh "docker login -u cn-south-1@HUAWEIYUN_USR -pHUAWEIYUN_PSW swr.cn-south-1.myhuaweicloud.com"    
+                    sh "docker login -u cn-south-1@${HUAWEIYUN_USR} -p${HUAWEIYUN_PSW} swr.cn-south-1.myhuaweicloud.com"
                 }
             }
         }
