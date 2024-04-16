@@ -1,7 +1,7 @@
 pipeline {
     agent{
         kubernetes{
-            label "pod"
+            label "jenkins-agent"
             cloud 'twelve'
             yaml '''
 ---
@@ -10,10 +10,18 @@ kind: "Pod"
 metadata:
   labels:
     jenkins: "slave"
-    jenkins/label: "pod"
+    jenkins/label: "jenkins-agent"
   name: "agent"
   namespace: "jenkins"
 spec:
+  initContainers:
+  - name: alpine
+    image: alpine:3.9
+    imagePullPolicy: IfNotPresent
+    command: ["sh","-c","chown -R 1000:1000 /home/jenkins/agent"]
+    volumeMounts:
+    - name: workspace-volume
+      mountPath: "/home/jenkins/agent"
   containers:
   - name: "tools"
     args:
@@ -24,6 +32,9 @@ spec:
     imagePullPolicy: "IfNotPresent"
     resources: {}
     volumeMounts:
+    - mountPath: "/usr/lib/sonar-scanner/conf"
+      name: "volume-2"
+      readOnly: false
     - mountPath: "/var/run/docker.sock"
       name: "volume-1"
       readOnly: false
@@ -32,9 +43,6 @@ spec:
       readOnly: false
     - mountPath: "/home/jenkins/agent"
       name: "workspace-volume"
-      readOnly: false
-    - mountPath: "/usr/lib/sonar-scanner/conf"
-      name: "sonar"
       readOnly: false
     workingDir: "/home/jenkins/agent"
 
@@ -61,13 +69,13 @@ spec:
       name: "admin-kubeconfig"
       optional: false
     name: "volume-0"
-  - hostPath:
-      path: "/var/run/docker.sock"
-    name: "volume-1"
   - configMap:
       name: "sonar"
       optional: false
-    name: "volume-0"
+    name: "volume-2"
+  - hostPath:
+      path: "/var/run/docker.sock"
+    name: "volume-1"
   - hostPath:
       path: "/opt/jenkins-agent"
     name: "workspace-volume"

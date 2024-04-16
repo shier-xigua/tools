@@ -35,6 +35,9 @@ spec:
         image: alpine:3.9
         imagePullPolicy: IfNotPresent
         command: ["sh","-c","chown -R 1000:1000 /home/jenkins/agent"]
+        volumeMounts:
+        - name: workspace-volume
+          mountPath: "/home/jenkins/agent"
       containers:
       - image: {{ IMAGE }}
         imagePullPolicy: IfNotPresent
