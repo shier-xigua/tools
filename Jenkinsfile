@@ -131,6 +131,7 @@ spec:
                     sh "sed -i 's#{{ IMAGE }}#${IMAGE_NAME}#g' deploy/*"
                     timeout(time: 1, unit: 'MINUTES') {
                         sh "kubectl apply -f deploy/"
+                        sh "echo '123'"
                     }
                 }
             }
