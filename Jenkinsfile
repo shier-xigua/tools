@@ -2,7 +2,7 @@ pipeline {
     agent{
         kubernetes{
             label "pod"
-            cloud 'kubernetes'
+            cloud 'twelve'
             yaml '''
 ---
 apiVersion: "v1"
