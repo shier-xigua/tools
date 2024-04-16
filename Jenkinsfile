@@ -85,11 +85,10 @@ spec:
     options {
         buildDiscarder(logRotator(numToKeepStr: '10'))
 		disableConcurrentBuilds()
-		timeout(time: 20, unit: 'MINUTES')
-		gitLabConnection('gitlab')
+		timeout(time: 30, unit: 'MINUTES')
     }
     environment {
-        IMAGE_NAME= "swr.cn-south-1.myhuaweicloud.com/lz/job:sonar-1"
+        IMAGE_NAME= "swr.cn-south-1.myhuaweicloud.com/lz/job:sonar"
         HUAWEIYUN = credentials('huaweiyun-swr')
     }
     stages {
@@ -126,21 +125,20 @@ spec:
                 }
             }
         }
-        stage('kubectl') {
-            steps {
-                container('tools') {
-                    sh "kubectl get pod -n jenkins"
-                }
-            }
-        }
         stage('deploy') {
             steps {
                 container('tools') {
                     sh "sed -i 's#{{ IMAGE }}#${IMAGE_NAME}#g' deploy/*"
                     timeout(time: 1, unit: 'MINUTES') {
                         sh "kubectl apply -f deploy/"
-                        sh "echo '123'"
                     }
+                }
+            }
+        }
+        stage('kubectl') {
+            steps {
+                container('tools') {
+                    sh "kubectl get pod -n jenkins"
                 }
             }
         }
