@@ -15,6 +15,26 @@ spec:
       labels:
         app: tools
     spec:
+      volumes:
+      - configMap:
+          name: "admin-kubeconfig"
+          optional: false
+        name: "volume-0"
+      - configMap:
+          name: "sonar"
+          optional: false
+        name: "volume-2"
+      - hostPath:
+          path: "/var/run/docker.sock"
+        name: "volume-1"
+      - hostPath:
+          path: "/opt/jenkins-agent"
+        name: "workspace-volume"
+      initContainers:
+      - name: alpine
+        image: alpine:3.9
+        imagePullPolicy: IfNotPresent
+        command: ["sh","-c","chown -R 1000:1000 /home/jenkins/agent"]
       containers:
       - image: {{ IMAGE }}
         imagePullPolicy: IfNotPresent
@@ -23,4 +43,18 @@ spec:
         - /bin/bash
         - -c
         - sleep 3600
+        volumeMounts:
+        - mountPath: "/usr/lib/sonar-scanner/conf"
+          name: "volume-2"
+          readOnly: false
+        - mountPath: "/var/run/docker.sock"
+          name: "volume-1"
+          readOnly: false
+        - mountPath: "/root/.kube"
+          name: "volume-0"
+          readOnly: false
+        - mountPath: "/home/jenkins/agent"
+          name: "workspace-volume"
+          readOnly: false
+        workingDir: "/home/jenkins/agent"
         resources: {}
