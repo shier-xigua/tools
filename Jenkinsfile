@@ -115,7 +115,7 @@ spec:
         stage('build image') {
             steps {
                 container('tools') {
-                    sh "docker build . -t ${IMAGE_NAME} -f Dockerfile.sonar "
+                    sh "docker build . -t ${IMAGE_NAME}"
                 }
             }
         }
