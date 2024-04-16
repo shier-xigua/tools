@@ -81,7 +81,7 @@ spec:
 		gitLabConnection('gitlab')
     }
     environment {
-        IMAGE_NAME= "swr.cn-south-1.myhuaweicloud.com/lz/job:sonar"
+        IMAGE_NAME= "swr.cn-south-1.myhuaweicloud.com/lz/job:sonar-1"
         HUAWEIYUN = credentials('huaweiyun-swr')
     }
     stages {
