@@ -20,7 +20,7 @@ spec:
     - "9999"
     command:
     - "sleep"
-    image: "swr.cn-south-1.myhuaweicloud.com/lz/job:v2"
+    image: "swr.cn-south-1.myhuaweicloud.com/lz/job:sonar"
     imagePullPolicy: "IfNotPresent"
     resources: {}
     volumeMounts:
