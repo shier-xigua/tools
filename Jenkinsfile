@@ -142,13 +142,6 @@ spec:
                 }
             }
         }
-        stage('sleep') {
-            steps {
-                container('tools') {
-                   sh "sleep 3600"
-                }
-            }
-        }
     }
     post {
         success {
