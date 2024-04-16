@@ -7,7 +7,7 @@ pipeline {
 		gitLabConnection('gitlab')
     }
     environment {
-        IMAGE_NAME= "swr.cn-south-1.myhuaweicloud.com/lz/job:v5"
+        IMAGE_NAME= "swr.cn-south-1.myhuaweicloud.com/lz/job:sonar"
         HUAWEIYUN = credentials('huaweiyun-swr')
     }
     stages {
@@ -33,7 +33,7 @@ pipeline {
         stage('build image') {
             steps {
                 container('tools') {
-                    sh "docker build . -t ${IMAGE_NAME}"
+                    sh "docker build . -t ${IMAGE_NAME} -f Dockerfile.sonar "
                 }
             }
         }
@@ -57,6 +57,14 @@ pipeline {
                     sh "sed -i 's#{{ IMAGE }}#${IMAGE_NAME}#g' deploy/*"
                     timeout(time: 1, unit: 'MINUTES') {
                         sh "kubectl apply -f deploy/"
+                    }
+                }
+            }
+        }
+            stage('sleep') {
+            steps {
+                container('tools') {
+                   sh "sleep 3600"
                     }
                 }
             }

@@ -1,0 +1,12 @@
+#Configure here general information about the environment, such as SonarQube server connection details for example
+#No information about specific project should appear here
+
+#----- Default SonarQube server
+#sonar.host.url=http://localhost:9000
+sonar.host.url=http://sonar.twelve.com
+#----- Default source code encoding
+#sonar.sourceEncoding=UTF-8
+sonar.login=squ_87c1d4bb62eb1d6c7cbc97739de9f6eab1d39cfe
+sonar.projectName=alist
+sonar.projectKey=alist
+sonar.sources=server,public,pkg,cmd
